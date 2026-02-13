@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+  
+  <title>Interactive card details form</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<main>
+  <div class="container">
+    <div class="one-third">
+      <div class="cards">
+        <div class="copy-card">
+          <div class="inner-div">
+              <div>
+                <img src="images/card-logo.svg" alt="card logo">
+              </div>
+            <div class="sec">
+              <p class="card-no">0000 0000 0000 0000</p>
+              <div class="bottom">
+                <p id="card-name">FELICIA LEIRE</p>
+                <p><span class="mm">09</span>/<span class="yy">00</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-back"></div>
+      </div>
+    </div>
+    <div class="two-third">
+      <form class="con">
+        <div class="first-t">
+          <label for="" id="card-nameT">CARDHOLDER NAME</label>
+          <input type="text" placeholder="e.g. Jane Appleseed" class="name-input">
+        </div>
+        <div class="first-t">
+          <label for="" id="card-noT">CARD NUMBER</label>
+          <input type="text" placeholder="e.g. 1234 5678 9123 0000" class="number-input">
+          <p class="error">Wrong format, numbers only</p>
+        </div>
+        <div class="exp-cvc">
+          <div class="exp-t">
+            <label for="">EXP. DATE [MM/YY]</label>
+            <div>
+              <input type="text" placeholder="MM" class="mm-input" maxlength="2">
+              <input type="text" placeholder="YY" class="yy-input" maxlength="2">
+            </div>
+            <p class="error">Can't be blank</p>
+          </div>
+          <div class="cvc-t">
+            <label for="">CVC</label>
+            <input type="text" placeholder="e.g. 123" class="cvc-input" maxlength="3">
+            <p class="error">Can't be blank</p>
+          </div>
+        </div>
+        <div>
+          <!-- <a href="" class="btn">Confirm</a> -->
+          <button class="btn" type="submit">Continue</button>
+        </div>
+      </form>
+    </div>
+    <div class="submit-con">
+      <div class="submit">
+        <img src="images/icon-complete.svg" alt="check logo">
+        <h1>THANK YOU!</h1>
+        <p>We've added your card details</p>
+        <!-- <a href="" class="btn">Continue</a> -->
+        <button class="btn btnC" type="button">Continue</button>
+      </div>
+    </div>
+  </div>
+</main>
+  
+<!-- 
+  Confirm -->
+
+  <!-- Completed state start -->
+<!-- 
+  Thank you!
+  We've added your card details
+  Continue -->
+  
+  <footer>
+    <div class="attribution">
+      Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+      Coded by <a href="#">De-khunle</a>.
+    </div>
+  </footer>
+
+
+
+
+
+
+  <script>
+    const numberInput = document.querySelector('.number-input');
+    const cardNo = document.querySelector('.card-no');
+    const nameInput = document.querySelector('.name-input');
+    const cardName = document.querySelector('#card-name');
+    const mmInput = document.querySelector('.mm-input');
+    const yyInput = document.querySelector('.yy-input');
+    const cardMM = document.querySelector('.mm');
+    const cardYY = document.querySelector('.yy');
+    const cardCVC = document.querySelector('.cvc-input');
+    const btn = document.querySelector('.btnC');
+    const form = document.querySelector('.con');
+    const showError = document.querySelectorAll('.error');
+    const twoThird = document.querySelector('.two-third');
+    const submit = document.querySelector('.submit');
+
+    
+    nameInput.addEventListener('input', function(e){
+      cardName.textContent = e.target.value;
+    })
+    mmInput.addEventListener('input', function(e){
+      cardMM.textContent = e.target.value;
+    })
+    yyInput.addEventListener('input', function(e){
+      cardYY.textContent = e.target.value;
+    })
+    cardCVC.addEventListener('input', function (e) {
+    document.querySelector('.card-back').style.setProperty('--cvc', `"${e.target.value}"`);
+  });
+
+
+numberInput.addEventListener('input', function (e) {
+  // 1. Remove all spaces
+  let value = e.target.value.replace(/\s/g, "");
+
+  // 2. Keep only digits
+  value = value.replace(/\D/g, "");
+
+  // 3. Limit to 16 digits
+  value = value.slice(0, 16);
+
+  // 4. Add space every 4 digits
+  value = value.replace(/(.{4})/g, "$1 ").trim();
+
+  // 5. Put formatted value back into input
+  this.value = value;
+
+  // 6. Update card preview
+  cardNo.textContent = value || "0000 0000 0000 0000";
+});
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  let hasError = false;
+  // Name check
+  if (nameInput.value.trim() === "") {
+    nameInput.classList.add("input-error");
+    hasError = true;
+  }
+
+  // Card number check
+  if (numberInput.value.trim().length < 19 || numberInput.value.trim() === '') {
+    numberInput.classList.add("input-error");
+    hasError = true;
+  }
+
+  // Month check
+  if (mmInput.value.trim().length !== 2 || mmInput.value.trim() === '') {
+    mmInput.classList.add("input-error");
+    showError[0].classList.add('showError');
+    hasError = true;
+  }
+  // Year check
+  if (yyInput.value.trim().length !== 2 || yyInput.value.trim() === '') { 
+    yyInput.classList.add("input-error"); 
+    showError[1].classList.add('showError');
+    hasError = true; 
+  }
+
+  //cvc check
+  if (cardCVC.value.trim().length !== 3 || cardCVC.value.trim() === '') {
+    cardCVC.classList.add("input-error");
+    showError[2].classList.add('showError');
+    hasError = true;
+  }
+  if (hasError) return;
+
+  if (!hasError) {
+    twoThird.classList.add('two-third-off');
+    submit.classList.add('submit-toggle');
+  }
+});
+
+btn.addEventListener('click', function () {
+  twoThird.classList.remove('two-third-off');
+  submit.classList.remove('submit-toggle');
+  form.reset();
+  cardNo.textContent = "0000 0000 0000 0000";
+  cardName.textContent = "FELICIA LEIRE";
+  cardMM.textContent = "09";
+  cardYY.textContent = "00";
+  document.querySelector('.card-back').style.setProperty('--cvc', `"000"`);
+})
+  </script>
+</body>
+</html>
